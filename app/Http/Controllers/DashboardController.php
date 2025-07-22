@@ -11,18 +11,26 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     public function index() {
-    $totalUsers = User::count();
-    $totalQuizzes = 12;
-    $totalQuestions = 53;
-    $totalResults = 18;
 
-    $stats = [
-        ['label' => 'Total Users', 'value' => $totalUsers ?? 0, 'color' => 'bg-indigo-600', 'icon' => '👥'],
-        ['label' => 'Total Quizzes', 'value' => $totalQuizzes ?? 0, 'color' => 'bg-yellow-500', 'icon' => '📝'],
-        ['label' => 'Total Questions', 'value' => $totalQuestions ?? 0, 'color' => 'bg-emerald-600', 'icon' => '❓'],
-        ['label' => 'Quiz Results', 'value' => $totalResults ?? 0, 'color' => 'bg-pink-600', 'icon' => '📊'],
-    ];
+    $user = auth()->user();
 
-    return view('dashboard', compact('stats'));
+    if ($user->role === 'admin') {
+
+        $totalUsers = User::count();
+        $totalQuizzes = 12;
+        $totalQuestions = 53;
+        $totalResults = 18;
+    
+        $stats = [
+            ['label' => 'Total Users', 'value' => $totalUsers ?? 0, 'color' => 'bg-indigo-600', 'icon' => '👥'],
+            ['label' => 'Total Quizzes', 'value' => $totalQuizzes ?? 0, 'color' => 'bg-yellow-500', 'icon' => '📝'],
+            ['label' => 'Total Questions', 'value' => $totalQuestions ?? 0, 'color' => 'bg-emerald-600', 'icon' => '❓'],
+            ['label' => 'Quiz Results', 'value' => $totalResults ?? 0, 'color' => 'bg-pink-600', 'icon' => '📊'],
+        ];
+        return view('dashboard', compact('stats'));
+    }
+    
+    $quizzes = Quiz::all(); // or with any conditions like active ones only
+    return view('welcome', compact('quizzes'));
 }
 }

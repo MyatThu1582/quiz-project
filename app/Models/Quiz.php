@@ -18,4 +18,9 @@ class Quiz extends Model
         'start_time' => 'datetime',
         'end_time' => 'datetime',
     ];
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
 }

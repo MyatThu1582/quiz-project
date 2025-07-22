@@ -17,6 +17,8 @@
                     ← Back to Questions
                 </a>
 
+                <div x-data="{ open: false }">
+                <!-- Add Answer Button -->
                 <button @click="open = true"
                     class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-md shadow-sm transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
@@ -26,8 +28,44 @@
                     </svg>
                     Add Answer
                 </button>
+
+                <!-- Modal -->
+                <div x-show="open"
+                    x-transition
+                    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+                    <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Add Answer</h3>
+
+                        <form method="POST" action="{{ route('questions.answers.store', $question->id) }}">
+                            @csrf
+
+                            <div class="mb-4">
+                                <label for="answer" class="block text-sm font-medium text-gray-700">Answer</label>
+                                <input type="text" name="answer" id="answer" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="is_correct" class="form-checkbox text-indigo-600">
+                                    <span class="ml-2 text-sm text-gray-600">Mark as correct answer</span>
+                                </label>
+                            </div>
+
+                            <div class="flex justify-end gap-2">
+                                <button type="button" @click="open = false"
+                                    class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Cancel</button>
+                                <button type="submit"
+                                    class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+                
             </div>
         </div>
+
     </x-slot>
 
     {{-- Question display outside header slot --}}

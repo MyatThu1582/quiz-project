@@ -31,6 +31,10 @@ class User extends Authenticatable
         'password',
         'role', // ← this line!
     ];
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
 
 
     /**
